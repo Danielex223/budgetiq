@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { getCurrencySymbol, convertCurrency, fetchExchangeRates } from "../lib/currencyUtils";
+import { useToast } from "../lib/useToast";
 
 const BAR_COLORS = ["#7F77DD", "#D4537E", "#E24B4A", "#D85A30", "#378ADD", "#BA7517", "#1D9E75"];
 
 export default function Analytics() {
+  const { error: toastError } = useToast();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userCurrency, setUserCurrency] = useState("USD");
@@ -28,6 +30,7 @@ export default function Analytics() {
         setTransactions(data || []);
       } catch (err) {
         console.error("Fetch error:", err);
+        toastError("Failed to load analytics. Please refresh.");
       } finally {
         setLoading(false);
       }

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { useToast } from "../lib/useToast";
 
 export default function Settings() {
+  const { success, error: toastError, warning } = useToast();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [currency, setCurrency] = useState("USD");
@@ -22,6 +24,7 @@ export default function Settings() {
         }
       } catch (err) {
         console.error("Load user error:", err);
+        toastError("Failed to load profile. Please refresh.");
       } finally {
         setLoading(false);
       }
@@ -41,47 +44,39 @@ export default function Settings() {
       });
       if (error) throw error;
       setSaved(true);
+      success("Profile saved successfully.");
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
       console.error("Save error:", err);
+      toastError("Failed to save profile. Try again.");
     }
   };
 
   // CLEAR ALL TRANSACTIONS
   const handleClearTransactions = async () => {
     if (!window.confirm("Delete all transactions? This cannot be undone.")) return;
-    
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      const { error } = await supabase
-        .from("transactions")
-        .delete()
-        .eq("user_id", user.id);
-      
+      const { error } = await supabase.from("transactions").delete().eq("user_id", user.id);
       if (error) throw error;
-      alert("All transactions deleted.");
+      success("All transactions deleted.");
     } catch (err) {
       console.error("Delete transactions error:", err);
-      alert("Error deleting transactions.");
+      toastError("Failed to delete transactions. Try again.");
     }
   };
 
   // CLEAR ALL BUDGETS
   const handleClearBudgets = async () => {
     if (!window.confirm("Delete all budgets? This cannot be undone.")) return;
-    
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      const { error } = await supabase
-        .from("budgets")
-        .delete()
-        .eq("user_id", user.id);
-      
+      const { error } = await supabase.from("budgets").delete().eq("user_id", user.id);
       if (error) throw error;
-      alert("All budgets deleted.");
+      success("All budgets deleted.");
     } catch (err) {
       console.error("Delete budgets error:", err);
-      alert("Error deleting budgets.");
+      toastError("Failed to delete budgets. Try again.");
     }
   };
 
