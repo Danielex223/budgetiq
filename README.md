@@ -97,16 +97,7 @@ create policy "users own budgets" on budgets for all using (auth.uid() = user_id
 create policy "users own goals" on goals for all using (auth.uid() = user_id);
 ```
 
-### 4. Add your Supabase credentials
-
-Open `src/lib/supabase.js` and replace with your project values from **Project Settings → API**:
-
-```js
-const SUPABASE_URL = "https://your-project.supabase.co";
-const SUPABASE_ANON_KEY = "your-anon-key";
-```
-
-### 5. Run the app
+### 4. Run the app
 
 ```bash
 npm run dev
@@ -146,7 +137,7 @@ src/
 
 ## Deployment
 
-This app is deployed on [Vercel](https://vercel.com). To deploy your own:
+This app is deployed on budgetiq-75rz19kwe-danielex223s-projects.vercel.app . To deploy your own:
 
 1. Push your repo to GitHub
 2. Import the project on vercel.com
@@ -159,4 +150,6 @@ This app is deployed on [Vercel](https://vercel.com). To deploy your own:
 **Daniel Udo-Akang**
 B.S. Applied Information Technology — University of Baltimore, 2026
 
-[GitHub](https://github.com/danielex223) · [LinkedIn](https://linkedin.com/in/your-profile)
+[GitHub](https://github.com/danielex223)
+
+
