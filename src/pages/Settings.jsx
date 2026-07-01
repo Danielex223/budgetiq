@@ -1,3 +1,4 @@
+import T from "../lib/theme";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useToast } from "../lib/useToast";
@@ -124,9 +125,12 @@ export default function Settings() {
               <option value="NGN">NGN — Nigerian Naira</option>
             </select>
 
-            <button style={{ ...s.saveBtn, background: saved ? "#1D9E75" : "#7F77DD" }} onClick={handleSave}>
-              {saved ? "✓ Saved" : "Save changes"}
+            <button style={{ ...s.saveBtn, background: saved ? T.color.income : T.brand.primary }} onClick={handleSave}>
+              {saved ? "✓ Saved" : "Save all changes"}
             </button>
+            <div style={{ fontSize: 11, color: T.text.muted, textAlign: "center", marginTop: 4 }}>
+              Saves profile, currency & savings target
+            </div>
           </div>
 
           {/* PREFERENCES */}
@@ -143,19 +147,19 @@ export default function Settings() {
                 value={savingsGoal}
                 onChange={(e) => setSavingsGoal(e.target.value)}
               />
-              <div style={{ fontSize: 12, color: "#64748b", marginTop: -6, marginBottom: 12 }}>
+              <div style={{ fontSize: 12, color: T.text.secondary, marginTop: -6, marginBottom: 12 }}>
                 Dashboard will flag when you fall below this target.
               </div>
             </div>
 
             {/* DANGER ZONE */}
-            <div style={{ ...s.panel, border: "0.5px solid rgba(226,75,74,0.3)" }}>
-              <div style={{ ...s.panelHd, color: "#E24B4A" }}>Danger zone</div>
+            <div style={{ ...s.panel, border: `1px solid ${T.color.expenseDim}` }}>
+              <div style={{ ...s.panelHd, color: T.color.expense }}>Danger zone</div>
 
               <div style={s.dangerRow}>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 500, color: "#f1f5f9" }}>Clear all transactions</div>
-                  <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: T.text.primary }}>Clear all transactions</div>
+                  <div style={{ fontSize: 12, color: T.text.secondary, marginTop: 2 }}>
                     Permanently deletes all transaction data.
                   </div>
                 </div>
@@ -169,8 +173,8 @@ export default function Settings() {
 
               <div style={{ ...s.dangerRow, marginTop: 10 }}>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 500, color: "#f1f5f9" }}>Clear all budgets</div>
-                  <div style={{ fontSize: 12, color: "#64748b", marginTop: 2 }}>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: T.text.primary }}>Clear all budgets</div>
+                  <div style={{ fontSize: 12, color: T.text.secondary, marginTop: 2 }}>
                     Removes all budget limits you've set.
                   </div>
                 </div>
@@ -186,10 +190,10 @@ export default function Settings() {
             {/* ABOUT */}
             <div style={s.panel}>
               <div style={s.panelHd}>About</div>
-              <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.7 }}>
+              <div style={{ fontSize: 13, color: T.text.secondary, lineHeight: 1.7 }}>
                 <div>BudgetIQ v1.0</div>
                 <div>Personal finance tracker</div>
-                <div style={{ marginTop: 8, color: "#475569" }}>Built with React + Vite + Supabase</div>
+                <div style={{ marginTop: 8, color: T.text.muted }}>Built with React + Vite + Supabase</div>
               </div>
             </div>
 
@@ -201,17 +205,17 @@ export default function Settings() {
 }
 
 const s = {
-  page: { background: "#0b1120", minHeight: "100vh", color: "white", fontFamily: "sans-serif" },
-  container: { padding: "24px 20px", maxWidth: "960px", margin: "0 auto" },
+  page: { background: T.bg.base, minHeight: "100vh", color: T.color.white, fontFamily: "sans-serif" },
+  container: { padding: "24px 16px", maxWidth: "960px", margin: "0 auto" },
   topbar: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" },
-  pageTitle: { fontSize: 18, fontWeight: 500, color: "#f1f5f9" },
+  pageTitle: { fontSize: 18, fontWeight: 500, color: T.text.primary },
   cols: { display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 14 },
-  panel: { background: "#1e293b", borderRadius: 12, border: "0.5px solid #334155", padding: 16 },
-  panelHd: { fontSize: 11, fontWeight: 500, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 },
-  avatar: { width: 52, height: 52, borderRadius: "50%", background: "#7F77DD", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 500, color: "#fff", marginBottom: 16 },
-  fieldLabel: { fontSize: 11, color: "#64748b", marginBottom: 4, fontWeight: 500 },
-  input: { width: "100%", marginBottom: 10, padding: "8px 10px", borderRadius: 8, border: "0.5px solid #475569", background: "#0b1120", color: "white", fontSize: 13, outline: "none" },
-  saveBtn: { width: "100%", padding: 9, color: "#fff", fontSize: 13, fontWeight: 500, border: "none", borderRadius: 8, cursor: "pointer", transition: "background 0.2s" },
+  panel: { background: T.bg.surface, borderRadius: 12, border: `1px solid ${T.bg.border}`, padding: 16 },
+  panelHd: { fontSize: 11, fontWeight: 500, color: T.text.secondary, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 },
+  avatar: { width: 52, height: 52, borderRadius: "50%", background: T.brand.primary, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 500, color: T.color.white, marginBottom: 16 },
+  fieldLabel: { fontSize: 11, color: T.text.secondary, marginBottom: 4, fontWeight: 500 },
+  input: { width: "100%", marginBottom: 10, padding: "8px 10px", borderRadius: 8, border: `1px solid ${T.bg.border}`, background: T.bg.base, color: T.color.white, fontSize: 13, outline: "none" },
+  saveBtn: { width: "100%", padding: 9, color: T.color.white, fontSize: 13, fontWeight: 500, border: "none", borderRadius: 8, cursor: "pointer", transition: "background 0.2s" },
   dangerRow: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 },
-  dangerBtn: { padding: "6px 14px", background: "rgba(226,75,74,0.12)", border: "0.5px solid rgba(226,75,74,0.4)", color: "#E24B4A", fontSize: 12, fontWeight: 500, borderRadius: 8, cursor: "pointer", flexShrink: 0 },
+  dangerBtn: { padding: "6px 14px", background: T.color.expenseDim, border: "0.5px solid rgba(226,75,74,0.4)", color: T.color.expense, fontSize: 12, fontWeight: 500, borderRadius: 8, cursor: "pointer", flexShrink: 0 },
 };

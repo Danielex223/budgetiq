@@ -1,9 +1,10 @@
+import T, { CAT_COLORS, PIE_COLORS } from "../lib/theme";
 import { useEffect, useState } from "react";
 import { useToast } from "../lib/useToast";
 import { supabase } from "../lib/supabase";
 import { fetchExchangeRates, convertCurrency, formatDualCurrency, getCurrencySymbol } from "../lib/currencyUtils";
 
-const COLORS = ["#7F77DD","#1D9E75","#378ADD","#D4537E","#BA7517","#D85A30"];
+const COLORS = [T.brand.primary,T.color.income,T.color.blue,T.color.pink,T.color.warning,T.color.orange];
 
 export default function Goals() {
   const { success, error: toastError } = useToast();
@@ -154,10 +155,10 @@ export default function Goals() {
 
         <div style={s.summaryRow}>
           {[
-            { label:"Total target", val:fmt(totalTarget), color:"#7F77DD" },
-            { label:"Total saved", val:fmt(totalSaved), color:"#1D9E75" },
-            { label:"Remaining", val:fmt(Math.max(totalTarget-totalSaved,0)), color:"#E24B4A" },
-            { label:"Completed", val:completed, color:"#1D9E75" },
+            { label:"Total target", val:fmt(totalTarget), color:T.brand.primary },
+            { label:"Total saved", val:fmt(totalSaved), color:T.color.income },
+            { label:"Remaining", val:fmt(Math.max(totalTarget-totalSaved,0)), color:T.color.expense },
+            { label:"Completed", val:completed, color:T.color.income },
           ].map((m) => (
             <div key={m.label} style={s.summaryCard}>
               <div style={s.sLabel}>{m.label}</div>
@@ -190,7 +191,7 @@ export default function Goals() {
                   const convertedSaved = convertCurrency(g.saved, goalCurrency, userCurrency, rates);
                   const pct = Math.min(Math.round((convertedSaved / convertedTarget) * 100), 100);
                   const done = convertedSaved >= convertedTarget;
-                  const clr = done ? "#1D9E75" : COLORS[i % COLORS.length];
+                  const clr = done ? T.color.income : COLORS[i % COLORS.length];
                   const displayTarget = formatDualCurrency(g.target, goalCurrency, userCurrency, rates);
                   const displaySaved = formatDualCurrency(g.saved, goalCurrency, userCurrency, rates);
 
@@ -226,7 +227,7 @@ export default function Goals() {
                             <span style={{ color:clr, fontWeight:500, fontSize: 12, cursor:"pointer" }} onClick={() => { setEditId(g.id); setEditAmount(g.saved); }}>
                               {displaySaved} saved
                             </span>
-                            <span style={{ color:"#64748b", fontSize: 12 }}>of {displayTarget} · {pct}%</span>
+                            <span style={{ color:T.text.secondary, fontSize: 12 }}>of {displayTarget} · {pct}%</span>
                           </>
                         )}
                       </div>
@@ -253,34 +254,34 @@ export default function Goals() {
 }
 
 const s = {
-  page:{ background:"#0b1120", minHeight:"100vh", color:"white", fontFamily:"sans-serif" },
-  container:{ padding:"24px 20px", maxWidth:"960px", margin:"0 auto" },
+  page:{ background:T.bg.base, minHeight:"100vh", color:T.color.white, fontFamily:"sans-serif" },
+  container:{ padding:"24px 16px", maxWidth:"960px", margin:"0 auto" },
   topbar:{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"1.25rem" },
-  pageTitle:{ fontSize:18, fontWeight:500, color:"#f1f5f9" },
-  pill:{ fontSize:12, color:"#64748b", background:"#1e293b", border:"0.5px solid #334155", borderRadius:20, padding:"5px 12px" },
+  pageTitle:{ fontSize:18, fontWeight:500, color:T.text.primary },
+  pill:{ fontSize:12, color:T.text.secondary, background:T.bg.elevated, border:`1px solid ${T.bg.border}`, borderRadius:20, padding:"5px 12px" },
   summaryRow:{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(120px, 1fr))", gap:10, marginBottom:"1.25rem" },
-  summaryCard:{ background:"#1e293b", borderRadius:12, border:"0.5px solid #334155", padding:"12px 14px" },
-  sLabel:{ fontSize:11, color:"#64748b", textTransform:"uppercase", letterSpacing:"0.06em", fontWeight:500, marginBottom:4 },
+  summaryCard:{ background:T.bg.surface, borderRadius:12, border:`1px solid ${T.bg.border}`, padding:"12px 14px" },
+  sLabel:{ fontSize:11, color:T.text.secondary, textTransform:"uppercase", letterSpacing:"0.06em", fontWeight:500, marginBottom:4 },
   sVal:{ fontSize:19, fontWeight:500 },
   cols:{ display:"grid", gridTemplateColumns:"1fr 1.4fr", gap:14 },
-  panel:{ background:"#1e293b", borderRadius:12, border:"0.5px solid #334155", padding:16 },
-  panelHd:{ fontSize:11, fontWeight:500, color:"#64748b", textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:14 },
-  fieldLabel:{ fontSize:11, color:"#64748b", marginBottom:4, fontWeight:500 },
-  input:{ width:"100%", marginBottom:10, padding:"8px 10px", borderRadius:8, border:"0.5px solid #475569", background:"#0b1120", color:"white", fontSize:13, outline:"none" },
-  addBtn:{ width:"100%", padding:9, background:"#7F77DD", color:"#fff", fontSize:13, fontWeight:500, border:"none", borderRadius:8, cursor:"pointer" },
-  goalCard:{ background:"#0b1120", borderRadius:10, border:"0.5px solid #334155", padding:"12px 14px" },
+  panel:{ background:T.bg.surface, borderRadius:12, border:`1px solid ${T.bg.border}`, padding:16 },
+  panelHd:{ fontSize:11, fontWeight:500, color:T.text.secondary, textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:14 },
+  fieldLabel:{ fontSize:11, color:T.text.secondary, marginBottom:4, fontWeight:500 },
+  input:{ width:"100%", marginBottom:10, padding:"8px 10px", borderRadius:8, border:`1px solid ${T.bg.border}`, background:T.bg.base, color:T.color.white, fontSize:13, outline:"none" },
+  addBtn:{ width:"100%", padding:9, background:T.brand.primary, color:T.color.white, fontSize:13, fontWeight:500, border:"none", borderRadius:8, cursor:"pointer" },
+  goalCard:{ background:T.bg.base, borderRadius:10, border:`1px solid ${T.bg.border}`, padding:"12px 14px" },
   goalTop:{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 },
-  goalName:{ fontSize:14, fontWeight:500, color:"#f1f5f9" },
-  doneTag:{ fontSize:10, fontWeight:500, background:"rgba(29,158,117,0.15)", color:"#1D9E75", borderRadius:20, padding:"2px 8px" },
+  goalName:{ fontSize:14, fontWeight:500, color:T.text.primary },
+  doneTag:{ fontSize:10, fontWeight:500, background:T.color.incomeDim, color:T.color.income, borderRadius:20, padding:"2px 8px" },
   dot:{ width:8, height:8, borderRadius:"50%", flexShrink:0 },
-  barTrack:{ background:"#1e293b", borderRadius:4, height:7, overflow:"hidden", marginBottom:8 },
+  barTrack:{ background:T.bg.elevated, borderRadius:4, height:7, overflow:"hidden", marginBottom:8 },
   barFill:{ height:"100%", borderRadius:4, transition:"width 0.5s cubic-bezier(.4,0,.2,1)" },
   goalMeta:{ display:"flex", justifyContent:"space-between", fontSize:12, alignItems:"center" },
-  depositBtn:{ marginTop:10, width:"100%", padding:"6px", background:"transparent", border:"0.5px solid #334155", color:"#64748b", fontSize:12, borderRadius:7, cursor:"pointer" },
-  depositConfirm:{ padding:"8px 12px", background:"#1D9E75", color:"#fff", border:"none", borderRadius:8, cursor:"pointer", fontSize:12, fontWeight:500 },
-  editConfirm:{ padding:"4px 8px", background:"#1D9E75", color:"#fff", border:"none", borderRadius:6, cursor:"pointer", fontSize:11, fontWeight:500 },
-  editCancel:{ padding:"4px 8px", background:"transparent", border:"0.5px solid #334155", color:"#64748b", borderRadius:6, cursor:"pointer", fontSize:11 },
-  cancelBtn:{ padding:"8px 10px", background:"transparent", border:"0.5px solid #334155", color:"#64748b", borderRadius:8, cursor:"pointer", fontSize:12 },
-  deleteBtn:{ background:"transparent", border:"none", color:"#475569", fontSize:11, cursor:"pointer", padding:"2px 5px", borderRadius:4 },
-  empty:{ textAlign:"center", padding:"2rem", color:"#64748b", fontSize:13 },
+  depositBtn:{ marginTop:10, width:"100%", padding:"6px", background:"transparent", border:`1px solid ${T.bg.border}`, color:T.text.secondary, fontSize:12, borderRadius: 8, cursor:"pointer" },
+  depositConfirm:{ padding:"8px 12px", background:T.color.income, color:T.color.white, border:"none", borderRadius:8, cursor:"pointer", fontSize:12, fontWeight:500 },
+  editConfirm:{ padding:"4px 8px", background:T.color.income, color:T.color.white, border:"none", borderRadius:6, cursor:"pointer", fontSize:11, fontWeight:500 },
+  editCancel:{ padding:"4px 8px", background:"transparent", border:`1px solid ${T.bg.border}`, color:T.text.secondary, borderRadius:6, cursor:"pointer", fontSize:11 },
+  cancelBtn:{ padding:"8px 10px", background:"transparent", border:`1px solid ${T.bg.border}`, color:T.text.secondary, borderRadius:8, cursor:"pointer", fontSize:12 },
+  deleteBtn:{ background:"transparent", border:"none", color:T.text.muted, fontSize:11, cursor:"pointer", padding:"2px 5px", borderRadius:4 },
+  empty:{ textAlign:"center", padding:"2rem", color:T.text.secondary, fontSize:13 },
 };

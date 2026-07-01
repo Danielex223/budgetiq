@@ -1,3 +1,4 @@
+import T from "../lib/theme";
 import { useEffect, useState } from "react";
 
 export default function Toast({ id, message, type = "info", duration = 4000, onClose }) {
@@ -34,23 +35,23 @@ export default function Toast({ id, message, type = "info", duration = 4000, onC
 
     const typeStyles = {
       success: {
-        background: "#1D9E75",
-        color: "#fff",
+        background: T.color.income,
+        color: T.color.white,
         icon: "✓",
       },
       error: {
-        background: "#E24B4A",
-        color: "#fff",
+        background: T.color.expense,
+        color: T.color.white,
         icon: "✕",
       },
       info: {
-        background: "#7F77DD",
-        color: "#fff",
+        background: T.brand.primary,
+        color: T.color.white,
         icon: "ℹ",
       },
       warning: {
-        background: "#BA7517",
-        color: "#fff",
+        background: T.color.warning,
+        color: T.color.white,
         icon: "⚠",
       },
     };

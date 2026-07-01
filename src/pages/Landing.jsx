@@ -1,3 +1,4 @@
+import T from "../lib/theme";
 import { Link } from "react-router-dom";
 
 export default function Landing() {
@@ -6,7 +7,7 @@ export default function Landing() {
       {/* NAVBAR */}
       <nav style={s.navbar}>
         <div style={s.navContainer}>
-          <div style={s.logo}>Budget<span style={{ color: "#7F77DD" }}>IQ</span></div>
+          <div style={s.logo}>Budget<span style={{ color: T.brand.primary }}>IQ</span></div>
           <div style={s.navLinks}>
             <Link to="/" style={s.navLink}>Login</Link>
             <Link to="/register" style={{ ...s.navLink, ...s.registerLink }}>Register</Link>
@@ -114,7 +115,7 @@ export default function Landing() {
       {/* FOOTER */}
       <footer style={s.footer}>
         <div style={s.footerContainer}>
-          <div style={s.footerLogo}>Budget<span style={{ color: "#7F77DD" }}>IQ</span></div>
+          <div style={s.footerLogo}>Budget<span style={{ color: T.brand.primary }}>IQ</span></div>
           <div style={s.footerLinks}>
             <a href="#" style={s.footerLink}>Privacy</a>
             <a href="#" style={s.footerLink}>Terms</a>
@@ -128,55 +129,55 @@ export default function Landing() {
 }
 
 const s = {
-  page: { background: "#0b1120", color: "white", fontFamily: "sans-serif", minHeight: "100vh" },
+  page: { background: T.bg.base, color: T.color.white, fontFamily: "sans-serif", minHeight: "100vh" },
 
   // NAVBAR
-  navbar: { background: "#0f172a", borderBottom: "0.5px solid #1e293b", position: "sticky", top: 0, zIndex: 100 },
+  navbar: { background: T.bg.surface, borderBottom: `1px solid ${T.bg.border}`, position: "sticky", top: 0, zIndex: 100 },
   navContainer: { maxWidth: "1200px", margin: "0 auto", padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" },
   logo: { fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em" },
   navLinks: { display: "flex", gap: 16, alignItems: "center" },
-  navLink: { fontSize: 13, fontWeight: 500, color: "#64748b", textDecoration: "none" },
-  registerLink: { padding: "8px 16px", background: "#7F77DD", color: "#fff", borderRadius: 6 },
+  navLink: { fontSize: 13, fontWeight: 500, color: T.text.secondary, textDecoration: "none" },
+  registerLink: { padding: "8px 16px", background: T.brand.primary, color: T.color.white, borderRadius: 6 },
 
   // HERO
-  hero: { padding: "80px 20px", background: "linear-gradient(135deg, #0b1120 0%, #1a1f3a 100%)" },
-  heroContainer: { maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" },
+  hero: { padding: "80px 20px", background: T.bg.base },
+  heroContainer: { maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 60, alignItems: "center" },
   heroContent: {},
-  heroTitle: { fontSize: 48, fontWeight: 700, lineHeight: 1.2, marginBottom: 20, color: "#f1f5f9" },
-  heroSubtitle: { fontSize: 16, color: "#cbd5e1", lineHeight: 1.6, marginBottom: 32, maxWidth: 500 },
+  heroTitle: { fontSize: 48, fontWeight: 700, lineHeight: 1.2, marginBottom: 20, color: T.text.primary },
+  heroSubtitle: { fontSize: 16, color: T.text.subtle, lineHeight: 1.6, marginBottom: 32, maxWidth: 500 },
   heroCTA: { display: "flex", gap: 16 },
-  primaryBtn: { padding: "12px 28px", background: "#7F77DD", color: "#fff", textDecoration: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, display: "inline-block", transition: "background 0.2s" },
-  secondaryBtn: { padding: "12px 28px", background: "transparent", border: "1px solid #334155", color: "#cbd5e1", textDecoration: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, display: "inline-block", transition: "all 0.2s" },
+  primaryBtn: { padding: "12px 28px", background: T.brand.primary, color: T.color.white, textDecoration: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, display: "inline-block", transition: "background 0.2s" },
+  secondaryBtn: { padding: "12px 28px", background: "transparent", border: `1px solid ${T.bg.border}`, color: T.text.subtle, textDecoration: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, display: "inline-block", transition: "all 0.2s" },
   heroVisual: { display: "flex", justifyContent: "center" },
-  mockupCard: { background: "#1e293b", border: "0.5px solid #334155", borderRadius: 12, padding: 20, width: "100%", maxWidth: 320 },
+  mockupCard: { background: T.bg.surface, border: `1px solid ${T.bg.border}`, borderRadius: 12, padding: 20, width: "100%", maxWidth: 320 },
   mockupHeader: { display: "flex", gap: 8, marginBottom: 20 },
-  mockupDot: { width: 8, height: 8, borderRadius: "50%", background: "#334155" },
+  mockupDot: { width: 8, height: 8, borderRadius: "50%", background: T.bg.border },
   mockupContent: { display: "flex", flexDirection: "column", gap: 12 },
-  mockupMetric: { background: "#0b1120", padding: 12, borderRadius: 8 },
-  mockupLabel: { fontSize: 11, color: "#64748b", marginBottom: 4, textTransform: "uppercase", fontWeight: 500 },
-  mockupValue: { fontSize: 20, fontWeight: 600, color: "#1D9E75" },
+  mockupMetric: { background: T.bg.base, padding: 12, borderRadius: 8 },
+  mockupLabel: { fontSize: 11, color: T.text.secondary, marginBottom: 4, textTransform: "uppercase", fontWeight: 500 },
+  mockupValue: { fontSize: 20, fontWeight: 600, color: T.color.income },
 
   // FEATURES
-  features: { padding: "80px 20px", background: "#0b1120" },
+  features: { padding: "80px 20px", background: T.bg.base },
   featuresContainer: { maxWidth: "1200px", margin: "0 auto" },
-  featuresTitle: { fontSize: 36, fontWeight: 700, marginBottom: 50, textAlign: "center", color: "#f1f5f9" },
+  featuresTitle: { fontSize: 36, fontWeight: 700, marginBottom: 50, textAlign: "center", color: T.text.primary },
   featureGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 },
-  featureCard: { background: "#1e293b", border: "0.5px solid #334155", borderRadius: 12, padding: 28, textAlign: "center" },
+  featureCard: { background: T.bg.surface, border: `1px solid ${T.bg.border}`, borderRadius: 12, padding: 28, textAlign: "center" },
   featureIcon: { fontSize: 40, marginBottom: 16 },
-  featureTitle: { fontSize: 16, fontWeight: 600, marginBottom: 12, color: "#f1f5f9" },
-  featureDesc: { fontSize: 13, color: "#cbd5e1", lineHeight: 1.6 },
+  featureTitle: { fontSize: 16, fontWeight: 600, marginBottom: 12, color: T.text.primary },
+  featureDesc: { fontSize: 13, color: T.text.subtle, lineHeight: 1.6 },
 
   // CTA
   cta: { padding: "80px 20px", background: "linear-gradient(135deg, #7F77DD 0%, #5a52a8 100%)" },
   ctaContainer: { maxWidth: "600px", margin: "0 auto", textAlign: "center" },
-  ctaTitle: { fontSize: 36, fontWeight: 700, marginBottom: 12, color: "#fff" },
-  ctaSubtitle: { fontSize: 16, color: "rgba(255,255,255,0.8)", marginBottom: 32 },
+  ctaTitle: { fontSize: 36, fontWeight: 700, marginBottom: 12, color: T.color.white },
+  ctaSubtitle: { fontSize: 16, color: T.color.whiteDim, marginBottom: 32 },
 
   // FOOTER
-  footer: { padding: "40px 20px", borderTop: "0.5px solid #1e293b", background: "#0f172a" },
+  footer: { padding: "40px 20px", borderTop: `1px solid ${T.bg.border}`, background: T.bg.surface },
   footerContainer: { maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 },
   footerLogo: { fontSize: 16, fontWeight: 600 },
   footerLinks: { display: "flex", gap: 24 },
-  footerLink: { fontSize: 13, color: "#64748b", textDecoration: "none" },
-  footerCopy: { fontSize: 12, color: "#475569", width: "100%", textAlign: "center", marginTop: 20 },
+  footerLink: { fontSize: 13, color: T.text.secondary, textDecoration: "none" },
+  footerCopy: { fontSize: 12, color: T.text.muted, width: "100%", textAlign: "center", marginTop: 20 },
 };

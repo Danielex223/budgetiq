@@ -1,6 +1,8 @@
+import T from "./lib/theme";
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { ToastContext, useToastProvider } from "./lib/useToast";
 import { ToastContainer } from "./components/Toast";
+import { useEffect, useState } from "react";
 
 import Landing from "./pages/Landing";
 import Navbar from "./components/Navbar";
@@ -15,13 +17,25 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+function useIsMobile() {
+  const [mobile, setMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const handler = () => setMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return mobile;
+}
+
 function AppLayout() {
+  const isMobile = useIsMobile();
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0b1120" }}>
-      <Navbar />
-      <div style={{ flex: 1, overflowY: "auto" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: T.bg.base }}>
+      {!isMobile && <Navbar />}
+      <div style={{ flex: 1, overflowY: "auto", paddingBottom: isMobile ? 72 : 0 }}>
         <Outlet />
       </div>
+      {isMobile && <Navbar />}
     </div>
   );
 }
@@ -29,14 +43,9 @@ function AppLayout() {
 function AppRoutes() {
   return (
     <Routes>
-      {/* PUBLIC - LANDING */}
       <Route path="/landing" element={<Landing />} />
-
-      {/* PUBLIC - AUTH */}
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
-      {/* PROTECTED */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
@@ -47,8 +56,6 @@ function AppRoutes() {
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Route>
-
-      {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
@@ -56,7 +63,6 @@ function AppRoutes() {
 
 function AppWithToast() {
   const toast = useToastProvider();
-
   return (
     <ToastContext.Provider value={toast}>
       <BrowserRouter>

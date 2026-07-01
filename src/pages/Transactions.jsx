@@ -1,13 +1,11 @@
+import T, { CAT_COLORS, PIE_COLORS } from "../lib/theme";
 import { useEffect, useState } from "react";
 import { useToast } from "../lib/useToast";
 import { supabase } from "../lib/supabase";
 import { fetchExchangeRates, convertCurrency, formatDualCurrency, getCurrencySymbol } from "../lib/currencyUtils";
 import { getFrequencyLabel, getNextOccurrenceDate, createNextRecurrence } from "../lib/recurringTransactions";
 
-const CAT_COLORS = {
-  Food: "#E24B4A", Transport: "#D85A30", Rent: "#BA7517", Salary: "#1D9E75", Shopping: "#D4537E",
-  Entertainment: "#7F77DD", Health: "#378ADD", default: "#888780",
-};
+// CAT_COLORS imported from theme.js
 
 const CATEGORIES = [
   "Food", "Transport", "Rent", "Salary", "Shopping", "Entertainment", "Health", "Freelance", "Other",
@@ -257,24 +255,24 @@ export default function Transactions() {
         <div style={s.summaryRow}>
           <div style={s.summaryCard}>
             <div style={s.sLabel}>Total income</div>
-            <div style={{ ...s.sVal, color: "#1D9E75" }}>{fmt(totalIncome)}</div>
+            <div style={{ ...s.sVal, color: T.color.income }}>{fmt(totalIncome)}</div>
           </div>
           <div style={s.summaryCard}>
             <div style={s.sLabel}>Total expenses</div>
-            <div style={{ ...s.sVal, color: "#E24B4A" }}>{fmt(totalExpenses)}</div>
+            <div style={{ ...s.sVal, color: T.color.expense }}>{fmt(totalExpenses)}</div>
           </div>
           <div style={s.summaryCard}>
             <div style={s.sLabel}>Net balance</div>
             <div style={{
               ...s.sVal,
-              color: totalIncome - totalExpenses >= 0 ? "#1D9E75" : "#E24B4A"
+              color: totalIncome - totalExpenses >= 0 ? T.color.income : T.color.expense
             }}>
               {fmt(Math.abs(totalIncome - totalExpenses))}
             </div>
           </div>
           <div style={s.summaryCard}>
             <div style={s.sLabel}>Showing</div>
-            <div style={{ ...s.sVal, color: "#7F77DD" }}>{visible.length}</div>
+            <div style={{ ...s.sVal, color: T.brand.primary }}>{visible.length}</div>
           </div>
         </div>
 
@@ -440,7 +438,7 @@ export default function Transactions() {
 
             {/* SORT */}
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-              <span style={{ fontSize: 11, color: "#64748b" }}>Sort:</span>
+              <span style={{ fontSize: 11, color: T.text.secondary }}>Sort:</span>
               <select
                 style={{ ...s.input, marginBottom: 0, width: "auto", fontSize: 11, padding: "4px 8px" }}
                 value={sortBy}
@@ -463,7 +461,7 @@ export default function Transactions() {
                 visible.map((t) => {
                   const isExp = t.type === "expense";
                   const dotClr = CAT_COLORS[t.category] || CAT_COLORS.default;
-                  const amtClr = isExp ? "#E24B4A" : "#1D9E75";
+                  const amtClr = isExp ? T.color.expense : T.color.income;
                   const txCurrency = t.original_currency || "USD";
                   const displayAmount = formatDualCurrency(t.amount, txCurrency, userCurrency, rates);
                   const nextDate = t.is_recurring ? getNextOccurrenceDate(t.created_at, t.frequency) : null;
@@ -528,44 +526,44 @@ export default function Transactions() {
 }
 
 const s = {
-  page: { background: "#0b1120", minHeight: "100vh", color: "white", fontFamily: "sans-serif" },
-  container: { padding: "24px 20px", maxWidth: "960px", margin: "0 auto" },
-  undoBar: { background: "rgba(29,158,117,0.12)", border: "0.5px solid #1D9E75", color: "#1D9E75", padding: "10px 14px", borderRadius: 8, marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 },
-  undoBtn: { padding: "4px 12px", background: "#1D9E75", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer", fontSize: 11, fontWeight: 500 },
+  page: { background: T.bg.base, minHeight: "100vh", color: T.color.white, fontFamily: "sans-serif" },
+  container: { padding: "24px 16px", maxWidth: "960px", margin: "0 auto" },
+  undoBar: { background: T.color.incomeDim, border: `1px solid ${T.color.income}`, color: T.color.income, padding: "10px 14px", borderRadius: 8, marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12 },
+  undoBtn: { padding: "4px 12px", background: T.color.income, color: T.color.white, border: "none", borderRadius: 6, cursor: "pointer", fontSize: 11, fontWeight: 500 },
   topbar: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" },
-  pageTitle: { fontSize: 18, fontWeight: 500, color: "#f1f5f9" },
-  countPill: { fontSize: 12, color: "#64748b", background: "#1e293b", border: "0.5px solid #334155", borderRadius: 20, padding: "5px 12px" },
+  pageTitle: { fontSize: 18, fontWeight: 500, color: T.text.primary },
+  countPill: { fontSize: 12, color: T.text.secondary, background: T.bg.elevated, border: `1px solid ${T.bg.border}`, borderRadius: 20, padding: "5px 12px" },
   summaryRow: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10, marginBottom: "1.25rem" },
-  summaryCard: { background: "#1e293b", borderRadius: 12, border: "0.5px solid #334155", padding: "12px 14px" },
-  sLabel: { fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500, marginBottom: 4 },
+  summaryCard: { background: T.bg.surface, borderRadius: 12, border: `1px solid ${T.bg.border}`, padding: "12px 14px" },
+  sLabel: { fontSize: 11, color: T.text.secondary, textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500, marginBottom: 4 },
   sVal: { fontSize: 19, fontWeight: 500 },
   cols: { display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 14 },
-  panel: { background: "#1e293b", borderRadius: 12, border: "0.5px solid #334155", padding: 16 },
-  panelHd: { fontSize: 11, fontWeight: 500, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 },
-  seg: { display: "flex", background: "#0b1120", borderRadius: 8, border: "0.5px solid #334155", overflow: "hidden", marginBottom: 12 },
-  segBtn: { flex: 1, padding: "7px", fontSize: 12, fontWeight: 500, border: "none", background: "transparent", color: "#64748b", cursor: "pointer" },
-  segBtnActive: { background: "#7F77DD", color: "#fff", borderRadius: 7 },
-  fieldLabel: { fontSize: 11, color: "#64748b", marginBottom: 4, fontWeight: 500 },
-  input: { width: "100%", marginBottom: 10, padding: "8px 10px", borderRadius: 8, border: "0.5px solid #475569", background: "#0b1120", color: "white", fontSize: 13, outline: "none" },
-  addBtn: { width: "100%", padding: 9, background: "#7F77DD", color: "#fff", fontSize: 13, fontWeight: 500, border: "none", borderRadius: 8, cursor: "pointer", marginTop: 8 },
-  recurringSection: { marginBottom: 10, padding: 10, background: "#0b1120", borderRadius: 8, border: "0.5px solid #334155" },
-  recurringLabel: { fontSize: 12, color: "#f1f5f9", fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center" },
-  recurringOptions: { background: "#0b1120", padding: 12, borderRadius: 8, marginBottom: 12, border: "0.5px solid #475569" },
+  panel: { background: T.bg.surface, borderRadius: 12, border: `1px solid ${T.bg.border}`, padding: 16 },
+  panelHd: { fontSize: 11, fontWeight: 500, color: T.text.secondary, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 },
+  seg: { display: "flex", background: T.bg.base, borderRadius: 8, border: `1px solid ${T.bg.border}`, overflow: "hidden", marginBottom: 12 },
+  segBtn: { flex: 1, padding: "7px", fontSize: 12, fontWeight: 500, border: "none", background: "transparent", color: T.text.secondary, cursor: "pointer" },
+  segBtnActive: { background: T.brand.primary, color: T.color.white, borderRadius: 8 },
+  fieldLabel: { fontSize: 11, color: T.text.secondary, marginBottom: 4, fontWeight: 500 },
+  input: { width: "100%", marginBottom: 10, padding: "8px 10px", borderRadius: 8, border: `1px solid ${T.bg.border}`, background: T.bg.base, color: T.color.white, fontSize: 13, outline: "none" },
+  addBtn: { width: "100%", padding: 9, background: T.brand.primary, color: T.color.white, fontSize: 13, fontWeight: 500, border: "none", borderRadius: 8, cursor: "pointer", marginTop: 8 },
+  recurringSection: { marginBottom: 10, padding: 10, background: T.bg.base, borderRadius: 8, border: `1px solid ${T.bg.border}` },
+  recurringLabel: { fontSize: 12, color: T.text.primary, fontWeight: 500, cursor: "pointer", display: "flex", alignItems: "center" },
+  recurringOptions: { background: T.bg.base, padding: 12, borderRadius: 8, marginBottom: 12, border: `1px solid ${T.bg.border}` },
   filterRow: { display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" },
-  filterBtn: { padding: "4px 10px", fontSize: 11, fontWeight: 500, border: "0.5px solid #334155", borderRadius: 20, background: "transparent", color: "#64748b", cursor: "pointer", whiteSpace: "nowrap" },
-  filterBtnActive: { background: "#7F77DD", color: "#fff", border: "0.5px solid #7F77DD" },
+  filterBtn: { padding: "4px 10px", fontSize: 11, fontWeight: 500, border: `1px solid ${T.bg.border}`, borderRadius: 20, background: "transparent", color: T.text.secondary, cursor: "pointer", whiteSpace: "nowrap" },
+  filterBtnActive: { background: T.brand.primary, color: T.color.white, border: `1px solid ${T.brand.primary}` },
   txList: { display: "flex", flexDirection: "column", gap: 5, maxHeight: 420, overflowY: "auto" },
-  txRow: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 10px", borderRadius: 8, background: "#0b1120", border: "0.5px solid #334155" },
-  txEditRow: { display: "flex", gap: 6, padding: "6px", borderRadius: 8, background: "#0b1120", border: "0.5px solid #334155", marginBottom: 5, alignItems: "center" },
+  txRow: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "9px 10px", borderRadius: 8, background: T.bg.base, border: `1px solid ${T.bg.border}` },
+  txEditRow: { display: "flex", gap: 6, padding: "6px", borderRadius: 8, background: T.bg.base, border: `1px solid ${T.bg.border}`, marginBottom: 5, alignItems: "center" },
   txLeft: { display: "flex", alignItems: "center", gap: 9, flex: 1 },
   txDot: { width: 8, height: 8, borderRadius: "50%", flexShrink: 0 },
-  txCat: { fontSize: 13, fontWeight: 500, color: "#f1f5f9" },
-  txMeta: { fontSize: 11, color: "#64748b", marginTop: 1 },
-  recurringBadge: { color: "#7F77DD", fontWeight: 500, fontSize: 10 },
-  nextDate: { fontSize: 10, color: "#378ADD", marginTop: 2 },
+  txCat: { fontSize: 13, fontWeight: 500, color: T.text.primary },
+  txMeta: { fontSize: 11, color: T.text.secondary, marginTop: 1 },
+  recurringBadge: { color: T.brand.primary, fontWeight: 500, fontSize: 10 },
+  nextDate: { fontSize: 10, color: T.color.blue, marginTop: 2 },
   txAmt: { fontSize: 13, fontWeight: 500 },
-  editConfirm: { padding: "4px 8px", background: "#1D9E75", color: "#fff", border: "none", borderRadius: 6, cursor: "pointer", fontSize: 11, fontWeight: 500 },
-  editCancel: { padding: "4px 8px", background: "transparent", border: "0.5px solid #334155", color: "#64748b", borderRadius: 6, cursor: "pointer", fontSize: 11 },
-  deleteBtn: { background: "transparent", border: "none", color: "#475569", fontSize: 11, cursor: "pointer", padding: "2px 5px", borderRadius: 4 },
-  empty: { textAlign: "center", padding: "2rem", color: "#64748b", fontSize: 13 },
+  editConfirm: { padding: "4px 8px", background: T.color.income, color: T.color.white, border: "none", borderRadius: 6, cursor: "pointer", fontSize: 11, fontWeight: 500 },
+  editCancel: { padding: "4px 8px", background: "transparent", border: `1px solid ${T.bg.border}`, color: T.text.secondary, borderRadius: 6, cursor: "pointer", fontSize: 11 },
+  deleteBtn: { background: "transparent", border: "none", color: T.text.muted, fontSize: 11, cursor: "pointer", padding: "2px 5px", borderRadius: 4 },
+  empty: { textAlign: "center", padding: "2rem", color: T.text.secondary, fontSize: 13 },
 };

@@ -1,9 +1,10 @@
+import T, { CAT_COLORS, PIE_COLORS } from "../lib/theme";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { getCurrencySymbol, convertCurrency, fetchExchangeRates } from "../lib/currencyUtils";
 import { useToast } from "../lib/useToast";
 
-const BAR_COLORS = ["#7F77DD", "#D4537E", "#E24B4A", "#D85A30", "#378ADD", "#BA7517", "#1D9E75"];
+const BAR_COLORS = [T.brand.primary, T.color.pink, T.color.expense, T.color.orange, T.color.blue, T.color.warning, T.color.income];
 
 export default function Analytics() {
   const { error: toastError } = useToast();
@@ -66,11 +67,11 @@ export default function Analytics() {
 
   // INSIGHTS
   const insights = [];
-  if (savingsRate >= savingsTarget) insights.push({ text: `You're saving ${savingsRate}% of your income — great habit.`, color: "#1D9E75" });
-  else if (income > 0) insights.push({ text: `Your savings rate is ${savingsRate}%. Aim for at least ${savingsTarget}%.`, color: "#BA7517" });
-  if (sortedCats[0]) insights.push({ text: `${sortedCats[0][0]} is your biggest expense at ${fmt(sortedCats[0][1])}.`, color: "#7F77DD" });
-  if (expenses > income && income > 0) insights.push({ text: "You're spending more than you earn this period.", color: "#E24B4A" });
-  if (sortedCats.length >= 4) insights.push({ text: `You have expenses across ${sortedCats.length} categories.`, color: "#378ADD" });
+  if (savingsRate >= savingsTarget) insights.push({ text: `You're saving ${savingsRate}% of your income — great habit.`, color: T.color.income });
+  else if (income > 0) insights.push({ text: `Your savings rate is ${savingsRate}%. Aim for at least ${savingsTarget}%.`, color: T.color.warning });
+  if (sortedCats[0]) insights.push({ text: `${sortedCats[0][0]} is your biggest expense at ${fmt(sortedCats[0][1])}.`, color: T.brand.primary });
+  if (expenses > income && income > 0) insights.push({ text: "You're spending more than you earn this period.", color: T.color.expense });
+  if (sortedCats.length >= 4) insights.push({ text: `You have expenses across ${sortedCats.length} categories.`, color: T.color.blue });
 
   return (
     <div style={s.page}>
@@ -84,10 +85,10 @@ export default function Analytics() {
         {/* SUMMARY */}
         <div style={s.summaryRow}>
           {[
-            { label: "Total income", val: fmt(income), color: "#1D9E75" },
-            { label: "Total expenses", val: fmt(expenses), color: "#E24B4A" },
-            { label: "Net balance", val: fmt(Math.abs(balance)), color: balance >= 0 ? "#1D9E75" : "#E24B4A" },
-            { label: "Savings rate", val: `${savingsRate}%`, color: "#7F77DD" },
+            { label: "Total income", val: fmt(income), color: T.color.income },
+            { label: "Total expenses", val: fmt(expenses), color: T.color.expense },
+            { label: "Net balance", val: fmt(Math.abs(balance)), color: balance >= 0 ? T.color.income : T.color.expense },
+            { label: "Savings rate", val: `${savingsRate}%`, color: T.brand.primary },
           ].map((m) => (
             <div key={m.label} style={s.summaryCard}>
               <div style={s.sLabel}>{m.label}</div>
@@ -103,7 +104,7 @@ export default function Analytics() {
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {insights.map((ins, i) => (
                 <div key={i} style={{ ...s.insightRow, borderLeft: `3px solid ${ins.color}` }}>
-                  <span style={{ fontSize: 13, color: "#cbd5e1" }}>{ins.text}</span>
+                  <span style={{ fontSize: 13, color: T.text.subtle }}>{ins.text}</span>
                 </div>
               ))}
             </div>
@@ -127,8 +128,8 @@ export default function Analytics() {
                   return (
                     <div key={cat} style={{ marginBottom: 10 }}>
                       <div style={s.barRow}>
-                        <span style={{ color: "#f1f5f9", fontWeight: 500, fontSize: 13 }}>{cat}</span>
-                        <span style={{ color: "#64748b", fontSize: 12 }}>{fmt(amt)} · {pct}%</span>
+                        <span style={{ color: T.text.primary, fontWeight: 500, fontSize: 13 }}>{cat}</span>
+                        <span style={{ color: T.text.secondary, fontSize: 12 }}>{fmt(amt)} · {pct}%</span>
                       </div>
                       <div style={s.barTrack}>
                         <div style={{ ...s.barFill, width: `${pct}%`, background: clr }} />
@@ -151,12 +152,12 @@ export default function Analytics() {
               <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 {sortedInc.map(([cat, amt], i) => {
                   const pct = Math.round((amt / totalInc) * 100);
-                  const clr = ["#1D9E75", "#7F77DD", "#378ADD"][i % 3];
+                  const clr = [T.color.income, T.brand.primary, T.color.blue][i % 3];
                   return (
                     <div key={cat} style={{ marginBottom: 10 }}>
                       <div style={s.barRow}>
-                        <span style={{ color: "#f1f5f9", fontWeight: 500, fontSize: 13 }}>{cat}</span>
-                        <span style={{ color: "#64748b", fontSize: 12 }}>{fmt(amt)} · {pct}%</span>
+                        <span style={{ color: T.text.primary, fontWeight: 500, fontSize: 13 }}>{cat}</span>
+                        <span style={{ color: T.text.secondary, fontSize: 12 }}>{fmt(amt)} · {pct}%</span>
                       </div>
                       <div style={s.barTrack}>
                         <div style={{ ...s.barFill, width: `${pct}%`, background: clr }} />
@@ -176,8 +177,8 @@ export default function Analytics() {
                   <div style={{ ...s.ratioExp, width: `${Math.round((expenses / (income + expenses)) * 100)}%` }} />
                 </div>
                 <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 12 }}>
-                  <span style={{ color: "#1D9E75" }}>● Income {fmt(income)}</span>
-                  <span style={{ color: "#E24B4A" }}>● Expenses {fmt(expenses)}</span>
+                  <span style={{ color: T.color.income }}>● Income {fmt(income)}</span>
+                  <span style={{ color: T.color.expense }}>● Expenses {fmt(expenses)}</span>
                 </div>
               </div>
             )}
@@ -190,25 +191,25 @@ export default function Analytics() {
 }
 
 const s = {
-  page: { background: "#0b1120", minHeight: "100vh", color: "white", fontFamily: "sans-serif" },
-  container: { padding: "24px 20px", maxWidth: "960px", margin: "0 auto" },
+  page: { background: T.bg.base, minHeight: "100vh", color: T.text.primary, fontFamily: "sans-serif" },
+  container: { padding: "24px 16px", maxWidth: "960px", margin: "0 auto" },
   topbar: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" },
-  pageTitle: { fontSize: 18, fontWeight: 500, color: "#f1f5f9" },
-  pill: { fontSize: 12, color: "#64748b", background: "#1e293b", border: "0.5px solid #334155", borderRadius: 20, padding: "5px 12px" },
+  pageTitle: { fontSize: 18, fontWeight: 500, color: T.text.primary },
+  pill: { fontSize: 12, color: T.text.secondary, background: T.bg.elevated, border: `1px solid ${T.bg.border}`, borderRadius: 20, padding: "5px 12px" },
   summaryRow: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10, marginBottom: "1.25rem" },
-  summaryCard: { background: "#1e293b", borderRadius: 12, border: "0.5px solid #334155", padding: "12px 14px" },
-  sLabel: { fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500, marginBottom: 4 },
-  sVal: { fontSize: 19, fontWeight: 500 },
-  insightsBox: { background: "#1e293b", borderRadius: 12, border: "0.5px solid #334155", padding: 16, marginBottom: 14 },
-  insightRow: { background: "#0b1120", borderRadius: 8, padding: "10px 14px" },
-  cols: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 },
-  panel: { background: "#1e293b", borderRadius: 12, border: "0.5px solid #334155", padding: 16 },
-  panelHd: { fontSize: 11, fontWeight: 500, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 },
+  summaryCard: { background: T.bg.surface, borderRadius: 12, border: `1px solid ${T.bg.border}`, padding: "14px 16px" },
+  sLabel: { fontSize: 11, color: T.text.secondary, textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500, marginBottom: 6 },
+  sVal: { fontSize: 20, fontWeight: 600, color: T.text.primary },
+  insightsBox: { background: T.bg.surface, borderRadius: 12, border: `1px solid ${T.bg.border}`, padding: 16, marginBottom: 14 },
+  insightRow: { background: T.bg.elevated, borderRadius: 8, padding: "10px 14px", marginBottom: 8 },
+  cols: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 14 },
+  panel: { background: T.bg.surface, borderRadius: 12, border: `1px solid ${T.bg.border}`, padding: 18 },
+  panelHd: { fontSize: 11, fontWeight: 500, color: T.text.secondary, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 },
   barRow: { display: "flex", justifyContent: "space-between", marginBottom: 5 },
-  barTrack: { background: "#0b1120", borderRadius: 4, height: 7, overflow: "hidden" },
+  barTrack: { background: T.bg.elevated, borderRadius: 4, height: 7, overflow: "hidden" },
   barFill: { height: "100%", borderRadius: 4, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" },
   ratioTrack: { display: "flex", height: 10, borderRadius: 6, overflow: "hidden", gap: 2 },
-  ratioInc: { background: "#1D9E75", height: "100%", borderRadius: "6px 0 0 6px", transition: "width 0.5s ease" },
-  ratioExp: { background: "#E24B4A", height: "100%", borderRadius: "0 6px 6px 0", transition: "width 0.5s ease" },
-  empty: { textAlign: "center", padding: "2rem", color: "#64748b", fontSize: 13 },
+  ratioInc: { background: T.color.income, height: "100%", borderRadius: "6px 0 0 6px", transition: "width 0.5s ease" },
+  ratioExp: { background: T.color.expense, height: "100%", borderRadius: "0 6px 6px 0", transition: "width 0.5s ease" },
+  empty: { textAlign: "center", padding: "2rem", color: T.text.secondary, fontSize: 13 },
 };
